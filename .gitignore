@@ -1,0 +1,16 @@
+# IDE
+.idea/
+*.iml
+
+# Build output
+target/
+
+# SQLite database files
+*.db
+
+# Secrets
+.env
+
+# OS files
+Thumbs.db
+.DS_Store
