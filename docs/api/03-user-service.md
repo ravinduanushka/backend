@@ -159,3 +159,23 @@ Response `200`:
 ```
 
 Responses: `200`, `404`.
+
+
+## GET /internal/users?ids=id1,id2
+
+Called by mentor-service to get names for mentor lists. Not for the frontend. Maximum 100 ids.
+
+Response `200`:
+
+```json
+[
+  {
+    "id": "8d2e7a10-5b3c-4d6e-9f01-2a3b4c5d6e7f",
+    "firstName": "Nimal",
+    "lastName": "Silva",
+    "profileImageKey": "avatars/8d2e/1f3a.png"
+  }
+]
+```
+
+Ids that do not exist are left out. Responses: `200`, `400` more than 100 ids.
