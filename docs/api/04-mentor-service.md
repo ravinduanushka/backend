@@ -110,7 +110,7 @@ Responses: `201` MentorResponse (first time), `200` MentorResponse (update), `40
 
 Search APPROVED mentors only. Access: Student.
 
-Query: `q` (name, title or organization), `industry`, `expertiseId`, `minRating` (0 to 5), `page`, `size`. Sorted by `ratingAvg` descending.
+Query: `q` (title or organization), `industry`, `expertiseId`, `minRating` (0 to 5), `page`, `size`. Sorted by `ratingAvg` descending. Search by mentor name is not supported, because names live in user-service.
 
 Responses: `200` page of MentorSummary, `401`, `403`.
 
@@ -118,7 +118,7 @@ Responses: `200` page of MentorSummary, `401`, `403`.
 
 Access: Any logged-in user can view an APPROVED mentor. A mentor that is not APPROVED is visible only to that mentor and to ADMIN, others get 404.
 
-Responses: `200` MentorResponse, `401`, `403`, `404`.
+Responses: `200` MentorResponse, `401`, `404`.
 
 ## Expertise
 
@@ -132,9 +132,7 @@ Access: Any. Response `200`, a plain array (no paging):
     "id": "a1b2c3d4-0000-4111-8222-333344445555",
     "name": "Programming",
     "description": "Software development",
-    "expertises": [
-      { "id": "e1a2b3c4-1111-4222-8333-444455556666", "name": "Java", "description": null }
-    ]
+    "expertises": [{ "expertiseId": "e1a2b3c4-1111-4222-8333-444455556666", "name": "Java" }]
   }
 ]
 ```
