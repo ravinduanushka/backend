@@ -117,3 +117,75 @@ If the confirm call returns `409` (the booking expired or was cancelled before t
 | `LEMON_SQUEEZY_SIGNING_SECRET` | secret used to verify `X-Signature` |
 
 Never commit these. To test the webhook on a laptop, the URL must be public (a tunnel such as Cloudflare Tunnel or ngrok).
+
+
+## Refunds (Secondary)
+
+A refund returns the money of a `PAID` payment. The status values are `PENDING`, `COMPLETED`, `FAILED` and `REJECTED`.
+
+### POST /api/refunds
+
+Ask for a refund. Access: Student.
+
+```json
+{ "paymentId": "7c6b5a49-3827-4165-9403-f2e1d0c9b8a7", "reason": "Mentor did not join the session" }
+```
+
+Creates a refund with status `PENDING`. The amount is the full payment amount.
+
+Response `201`:
+
+```json
+{
+  "id": "e1f2a3b4-5c6d-4e7f-8a9b-0c1d2e3f4a5b",
+  "paymentId": "7c6b5a49-3827-4165-9403-f2e1d0c9b8a7",
+  "amountCents": 5000,
+  "currency": "USD",
+  "reason": "Mentor did not join the session",
+  "adminNote": null,
+  "status": "PENDING",
+  "createdAt": "2026-11-02T08:00:00.000Z",
+  "processedAt": null
+}
+```
+
+| Code | When |
+|---|---|
+| 400 | `paymentId` missing or not a UUID |
+| 403 | caller is not the student of this payment |
+| 404 | payment not found |
+| 409 | payment is not `PAID`, or a `PENDING` or `COMPLETED` refund already exists for it |
+
+### GET /api/refunds
+
+List refunds. Access: Student (own refunds), Admin (all). Query: `status`, `page`, `size`. Response is a page of the object above.
+
+### PUT /api/refunds/{id}
+
+Decide a refund. Access: Admin. The refund must be `PENDING`.
+
+```json
+{ "status": "APPROVED" }
+```
+
+or
+
+```json
+{ "status": "REJECTED", "adminNote": "Session was completed" }
+```
+
+`APPROVED` is an action, not a stored status:
+
+1. `APPROVED`: call Lemon Squeezy to refund the order (`transaction_id`)
+2. If it works, refund status becomes `COMPLETED`, `processed_at` is set and the payment status becomes `REFUNDED`
+3. If it fails, refund status becomes `FAILED` and the payment stays `PAID`
+4. `REJECTED`: refund status becomes `REJECTED`, `admin_note` is saved and the payment stays `PAID`
+
+Response `200`: the refund object with the new status.
+
+| Code | When |
+|---|---|
+| 400 | `status` is not `APPROVED` or `REJECTED` |
+| 403 | caller is not ADMIN |
+| 404 | refund not found |
+| 409 | refund is not `PENDING` |

@@ -116,7 +116,7 @@ Responses: `200` page of MentorSummary, `401`, `403`.
 
 ### GET /api/mentors/{id}
 
-Access: Student (APPROVED mentors only). The mentor themselves and Admin can also view a non-approved profile.
+Access: Any logged-in user can view an APPROVED mentor. A mentor that is not APPROVED is visible only to that mentor and to ADMIN, others get 404.
 
 Responses: `200` MentorResponse, `401`, `403`, `404`.
 

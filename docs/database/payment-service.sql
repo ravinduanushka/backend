@@ -27,8 +27,9 @@ CREATE TABLE refunds (
                          payment_id   TEXT NOT NULL REFERENCES payments (id) ON DELETE RESTRICT,
                          amount_cents INTEGER NOT NULL CHECK (amount_cents > 0),
                          reason       TEXT,
+                         admin_note   TEXT,
                          status       TEXT NOT NULL DEFAULT 'PENDING'
-                             CHECK (status IN ('PENDING', 'COMPLETED', 'FAILED')),
+                             CHECK (status IN ('PENDING', 'COMPLETED', 'FAILED', 'REJECTED')),
                          created_at   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
                          processed_at TEXT
 );
