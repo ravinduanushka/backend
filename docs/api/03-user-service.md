@@ -2,7 +2,7 @@
 
 Base URL (dev): `http://localhost:8081`. See `00-conventions.md` for headers, errors and formats.
 
-`email` and `externalAuthId` always come from the JWT (`email` and `sub` claims), never from the body.
+`email` comes from the JWT `email` claim. The new user's `id` and `externalAuthId` are both set to the JWT `sub` claim. None of them are accepted in the body.
 
 ## UserResponse
 
