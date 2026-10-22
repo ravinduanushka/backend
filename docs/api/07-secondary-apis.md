@@ -43,38 +43,13 @@ PaymentResponse:
 }
 ```
 
-RefundResponse:
-
-```json
-{
-  "id": "3b2a1c0d-9e8f-4a7b-8c6d-5e4f3a2b1c0d",
-  "paymentId": "7c6b5a49-3827-4165-9403-f2e1d0c9b8a7",
-  "amountCents": 5000,
-  "reason": "Mentor cancelled the session",
-  "status": "PENDING",
-  "createdAt": "2026-11-02T08:00:00.000Z",
-  "processedAt": null
-}
-```
-
 | Method | Path | Purpose | Access |
 |---|---|---|---|
 | GET | `/api/payments` | Own payments (query: `status`, `page`, `size`) | Student |
-| POST | `/api/payments/{id}/refunds` | Ask for a refund | Student |
-| GET | `/api/refunds` | List refunds (query: `status`, `page`, `size`) | Admin |
-| PUT | `/api/refunds/{id}/approve` | Approve and send the refund to Lemon Squeezy | Admin |
 
 `GET /api/payments`: `200` page of PaymentResponse.
 
-`POST /api/payments/{id}/refunds` body:
-
-```json
-{ "reason": "Mentor cancelled the session" }
-```
-
-`reason` is required, up to 500 characters. The refund amount is the full payment. Responses: `201` RefundResponse, `400`, `403` not your payment, `404`, `409` payment is not `PAID` or a refund already exists.
-
-`PUT /api/refunds/{id}/approve`: no body. Result is `COMPLETED` or `FAILED`. Responses: `200` RefundResponse, `404`, `409` refund is not `PENDING`.
+Refunds (`POST /api/refunds`, `GET /api/refunds`, `PUT /api/refunds/{id}`) are described in `06-payment-service.md`.
 
 ## mentorship-service
 
@@ -370,7 +345,7 @@ Both answer `201` with `{ "id": "..." }`.
 
 ## Open decisions
 
-- Refund rejection: the `refunds.status` column has no `REJECTED` value. Add it, or leave rejection out
+
 - Who may start a chat: any two users, or only a student and mentor who share a booking or program
 - Reschedule: 24 hour limit and same mentor only
 - Chat delivery: polling now, WebSocket later
