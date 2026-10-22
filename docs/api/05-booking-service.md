@@ -13,6 +13,8 @@ Base URL (dev): `http://localhost:8083`. See `00-conventions.md` for headers, er
 
 If payment is not done by `expiresAt`, a scheduler cancels the booking and frees the slot.
 
+`RESCHEDULED` is used by the reschedule feature and `NO_SHOW` is reserved for later. Neither has a Core endpoint.
+
 Price = `hourlyRateCents` x session minutes / 60, rounded to the nearest cent.
 
 ## Shared shapes
@@ -103,7 +105,7 @@ Responses: `200` BookingResponse, `401`, `403` not a party to this booking, `404
 
 ### POST /api/bookings/{id}/cancel
 
-Only `PENDING` or `CONFIRMED` bookings can be cancelled. The slot becomes `AVAILABLE` again. Refunds are not part of Core. Access: the student or mentor of the booking.
+Only `PENDING` or `CONFIRMED` bookings can be cancelled. The slot becomes `AVAILABLE` again and the session (if any) becomes `CANCELLED`. The money is not returned automatically. For a paid booking the student asks for a refund with `POST /api/refunds` (Secondary, see `06-payment-service.md`). Access: the student or mentor of the booking.
 
 ```json
 { "reason": "I have an exam that day" }
@@ -119,9 +121,9 @@ Access: the student or mentor of the booking. Responses: `200` SessionResponse, 
 
 ### POST /api/bookings/{id}/session/start
 
-Allowed from 15 minutes before `scheduledStart`. The booking must be `CONFIRMED`. Access: the mentor of the booking. No body.
+Allowed from 15 minutes before `scheduledStart` until `scheduledEnd`. The booking must be `CONFIRMED`. Access: the mentor of the booking. No body.
 
-Response `200` SessionResponse with status `IN_PROGRESS` and `actualStart` set. Also `401`, `403`, `404`, `409` too early, booking not CONFIRMED, or session already started.
+Response `200` SessionResponse with status `IN_PROGRESS` and `actualStart` set. Also `401`, `403`, `404`, `409` too early, too late, booking not CONFIRMED, or session already started.
 
 ### POST /api/bookings/{id}/session/complete
 
