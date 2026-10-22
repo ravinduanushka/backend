@@ -79,4 +79,14 @@ List endpoints take `page` (starts at 0) and `size` (default 20, max 100).
   "totalElements": 0,
   "totalPages": 0
 }
+
+
+
 ```
+
+## Caller identity
+
+- The JWT `sub` claim is the user's id. On register, `users.id` and `externalAuthId` are both set to `sub`
+- `me` and "own" in every service mean this id
+- Mentor-service maps a user id to a mentor id through `mentors.user_id`. Other services use `GET /internal/mentors/by-user/{userId}`
+- To confirm in Phase 5: Asgardeo `sub` is a UUID for every login type

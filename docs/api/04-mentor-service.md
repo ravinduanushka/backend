@@ -378,3 +378,17 @@ Response `200`:
 ```
 
 Responses: `200`, `400` rating not 1 to 5, `404`.
+
+
+### GET /internal/mentors/by-user/{userId}
+
+Used by booking-service to find the mentor id of a logged-in mentor. Response `200`:
+
+```json
+{
+  "id": "c1d2e3f4-0a1b-4c2d-8e3f-4a5b6c7d8e9f",
+  "verificationStatus": "APPROVED"
+}
+```
+
+Responses: `200`, `404` the user has no mentor profile.
