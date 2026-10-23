@@ -67,3 +67,4 @@
 ## API check rules
 - After building an endpoint, tell me the Postman request to add (method, URL, headers, body, expected status for success, 400, 403, 404/409)
 - After building an endpoint, set `Built` to ✅ in `docs/api/API-CHECKS.md`. Never mark the test columns. The developer marks them after running the requests
+- Postman collections are exported to `docs/api/postman/<service>/`
