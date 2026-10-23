@@ -1,85 +1,85 @@
+-- mentor-service (mentor_service.db) Port 8082
+-- Owns: mentors, expertise taxonomy, availability_slots, mentor_verifications
 PRAGMA foreign_keys = ON;
 
--- student_id, mentor_id point to other services (no FK)
-CREATE TABLE mentorship_programs (
-                                     id              TEXT PRIMARY KEY CHECK (length(id) = 36),
-                                     student_id      TEXT NOT NULL,
-                                     mentor_id       TEXT NOT NULL,
-                                     title           TEXT NOT NULL,
-                                     description     TEXT,
-                                     duration_months INTEGER NOT NULL CHECK (duration_months IN (6, 12, 24, 48)),
-                                     start_date      TEXT NOT NULL,
-                                     end_date        TEXT NOT NULL,
-                                     status          TEXT NOT NULL DEFAULT 'ACTIVE'
-                                         CHECK (status IN ('ACTIVE', 'COMPLETED', 'CANCELLED')),
-                                     created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-                                     updated_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-                                     CHECK (end_date > start_date)
+CREATE TABLE mentors (
+                         id                  TEXT PRIMARY KEY CHECK (length(id) = 36),
+                         user_id             TEXT NOT NULL UNIQUE,               -- -> user-service.users.id (logical)
+                         title               TEXT,
+                         organization        TEXT,
+                         industry            TEXT,
+                         bio                 TEXT,
+                         experience_years    INTEGER NOT NULL DEFAULT 0 CHECK (experience_years >= 0),
+                         hourly_rate_cents   INTEGER NOT NULL DEFAULT 0 CHECK (hourly_rate_cents >= 0),
+                         currency            TEXT NOT NULL DEFAULT 'USD',
+                         rating_avg          REAL NOT NULL DEFAULT 0 CHECK (rating_avg BETWEEN 0 AND 5),
+                         rating_count        INTEGER NOT NULL DEFAULT 0 CHECK (rating_count >= 0),
+                         verification_status TEXT NOT NULL DEFAULT 'PENDING'
+                             CHECK (verification_status IN ('PENDING', 'APPROVED', 'REJECTED')),
+                         created_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+                         updated_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 
-CREATE INDEX idx_programs_student ON mentorship_programs (student_id, status);
-CREATE INDEX idx_programs_mentor  ON mentorship_programs (mentor_id, status);
+CREATE INDEX idx_mentors_verification ON mentors (verification_status);
+CREATE INDEX idx_mentors_rating       ON mentors (rating_avg DESC);
+CREATE INDEX idx_mentors_industry     ON mentors (industry);
 
-CREATE TABLE goals (
-                       id                  TEXT PRIMARY KEY CHECK (length(id) = 36),
-                       program_id          TEXT NOT NULL REFERENCES mentorship_programs (id) ON DELETE CASCADE,
-                       title               TEXT NOT NULL,
-                       description         TEXT,
-                       target_date         TEXT,
-                       status              TEXT NOT NULL DEFAULT 'NOT_STARTED'
-                           CHECK (status IN ('NOT_STARTED', 'IN_PROGRESS', 'COMPLETED')),
-                       progress_percentage INTEGER NOT NULL DEFAULT 0
-                           CHECK (progress_percentage BETWEEN 0 AND 100),
-                       created_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-                       updated_at          TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+-- ---------- Expertise taxonomy ----------
+CREATE TABLE expertise_categories (
+                                      id          TEXT PRIMARY KEY CHECK (length(id) = 36),
+                                      name        TEXT NOT NULL UNIQUE COLLATE NOCASE,
+                                      description TEXT
 );
 
-CREATE INDEX idx_goals_program ON goals (program_id);
-
-CREATE TABLE tasks (
-                       id          TEXT PRIMARY KEY CHECK (length(id) = 36),
-                       program_id  TEXT NOT NULL REFERENCES mentorship_programs (id) ON DELETE CASCADE,
-                       goal_id     TEXT REFERENCES goals (id) ON DELETE SET NULL,
-                       assigned_by TEXT NOT NULL,
-                       assigned_to TEXT NOT NULL,
-                       title       TEXT NOT NULL,
-                       description TEXT,
-                       due_date    TEXT,
-                       priority    TEXT NOT NULL DEFAULT 'MEDIUM'
-                           CHECK (priority IN ('LOW', 'MEDIUM', 'HIGH')),
-                       status      TEXT NOT NULL DEFAULT 'TODO'
-                           CHECK (status IN ('TODO', 'IN_PROGRESS', 'DONE', 'CANCELLED')),
-                       created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-                       updated_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+CREATE TABLE expertises (
+                            id          TEXT PRIMARY KEY CHECK (length(id) = 36),
+                            category_id TEXT NOT NULL REFERENCES expertise_categories (id) ON DELETE RESTRICT,
+                            name        TEXT NOT NULL COLLATE NOCASE,
+                            description TEXT,
+                            UNIQUE (category_id, name)
 );
 
-CREATE INDEX idx_tasks_program  ON tasks (program_id, status);
-CREATE INDEX idx_tasks_goal     ON tasks (goal_id);
-CREATE INDEX idx_tasks_assignee ON tasks (assigned_to, status, due_date);
-
-CREATE TABLE progress_updates (
-                                  id          TEXT PRIMARY KEY CHECK (length(id) = 36),
-                                  goal_id     TEXT NOT NULL REFERENCES goals (id) ON DELETE CASCADE,
-                                  student_id  TEXT NOT NULL,
-                                  percentage  INTEGER NOT NULL CHECK (percentage BETWEEN 0 AND 100),
-                                  description TEXT,
-                                  created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+CREATE TABLE mentor_expertises (
+                                   mentor_id    TEXT NOT NULL REFERENCES mentors (id) ON DELETE CASCADE,
+                                   expertise_id TEXT NOT NULL REFERENCES expertises (id) ON DELETE RESTRICT,
+                                   proficiency  TEXT NOT NULL DEFAULT 'INTERMEDIATE'
+                                       CHECK (proficiency IN ('BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT')),
+                                   PRIMARY KEY (mentor_id, expertise_id)
 );
 
-CREATE INDEX idx_progress_goal ON progress_updates (goal_id, created_at DESC);
+CREATE INDEX idx_mentor_expertises_expertise ON mentor_expertises (expertise_id);
 
--- PRIVATE notes are hidden from the student
-CREATE TABLE mentor_notes (
-                              id         TEXT PRIMARY KEY CHECK (length(id) = 36),
-                              program_id TEXT REFERENCES mentorship_programs (id) ON DELETE CASCADE,
-                              mentor_id  TEXT NOT NULL,
-                              student_id TEXT NOT NULL,
-                              session_id TEXT,
-                              content    TEXT NOT NULL,
-                              visibility TEXT NOT NULL DEFAULT 'PRIVATE'
-                                  CHECK (visibility IN ('PRIVATE', 'SHARED')),
-                              created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+-- ---------- Availability ----------
+CREATE TABLE availability_slots (
+                                    id         TEXT PRIMARY KEY CHECK (length(id) = 36),
+                                    mentor_id  TEXT NOT NULL REFERENCES mentors (id) ON DELETE CASCADE,
+                                    start_time TEXT NOT NULL,                               -- UTC ISO-8601
+                                    end_time   TEXT NOT NULL,                               -- UTC ISO-8601
+                                    timezone   TEXT NOT NULL DEFAULT 'UTC',                 -- mentor display tz (IANA)
+                                    status     TEXT NOT NULL DEFAULT 'AVAILABLE'
+                                        CHECK (status IN ('AVAILABLE', 'HELD', 'BOOKED', 'BLOCKED')),
+                                    version    INTEGER NOT NULL DEFAULT 0,                  -- optimistic lock (@Version)
+                                    created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+                                    updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+                                    CHECK (end_time > start_time),
+                                    UNIQUE (mentor_id, start_time)
 );
 
-CREATE INDEX idx_notes_student ON mentor_notes (student_id, visibility);
-CREATE INDEX idx_notes_program ON mentor_notes (program_id);
+CREATE INDEX idx_slots_mentor_status_start ON availability_slots (mentor_id, status, start_time);
+CREATE INDEX idx_slots_status_start        ON availability_slots (status, start_time);
+
+-- ---------- Verification ----------
+CREATE TABLE mentor_verifications (
+                                      id            TEXT PRIMARY KEY CHECK (length(id) = 36),
+                                      mentor_id     TEXT NOT NULL REFERENCES mentors (id) ON DELETE CASCADE,
+                                      document_key  TEXT NOT NULL,                            -- Cloudflare R2 object key
+                                      status        TEXT NOT NULL DEFAULT 'PENDING'
+                                          CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED')),
+                                      reviewed_by   TEXT,                                     -- -> user-service.users.id (admin)
+                                      review_note   TEXT,
+                                      submitted_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+                                      reviewed_at   TEXT
+);
+
+CREATE INDEX idx_verifications_mentor ON mentor_verifications (mentor_id);
+CREATE INDEX idx_verifications_status ON mentor_verifications (status);
