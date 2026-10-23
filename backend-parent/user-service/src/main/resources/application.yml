@@ -4,6 +4,21 @@ server:
 spring:
   application:
     name: user-service
+  datasource:
+    url: jdbc:sqlite:${user-service.dir:.}/user_service.db
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      maximum-pool-size: 1
+      connection-init-sql: PRAGMA foreign_keys = ON
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    open-in-view: false
+  flyway:
+    enabled: true
+    mixed: true
+    locations: classpath:db/migration
 
 eureka:
   client:
