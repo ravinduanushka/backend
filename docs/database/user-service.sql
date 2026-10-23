@@ -14,6 +14,7 @@ CREATE TABLE users (
                            CHECK (role IN ('STUDENT', 'MENTOR', 'ADMIN')),
                        account_status    TEXT NOT NULL DEFAULT 'ACTIVE'
                            CHECK (account_status IN ('ACTIVE', 'SUSPENDED', 'DEACTIVATED')),
+                       created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
                        updated_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 
@@ -31,3 +32,5 @@ CREATE TABLE student_profiles (
                                   academic_year INTEGER CHECK (academic_year BETWEEN 1 AND 10),
                                   bio           TEXT,
                                   interests     TEXT,
+                                  updated_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
