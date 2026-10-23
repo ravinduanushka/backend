@@ -65,7 +65,7 @@ public class UserService {
         return UserResponse.from(userRepository.saveAndFlush(user));
     }
 
-    private User getActiveUser(String id) {
+    public User getActiveUser(String id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> ApiException.notFound("User not registered"));
         if (user.getAccountStatus() != AccountStatus.ACTIVE) {
