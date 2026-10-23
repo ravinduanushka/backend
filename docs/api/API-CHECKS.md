@@ -6,7 +6,7 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 ## user-service (8081)
 | Endpoint | Built | Success | 400 | 401/403 | 404/409 | Cross |
 |---|---|---|---|---|---|---|
-| POST /api/users/register | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| POST /api/users/register | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
 | GET /api/users/me | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
 | PUT /api/users/me | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
 | POST /api/users/me/avatar-upload-url | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
