@@ -12,9 +12,8 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 | POST /api/users/me/avatar-upload-url | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
 | GET /api/students/me/profile | ✅ | ✅ | - | ✅ | ✅ | ⬜ |
 | PUT /api/students/me/profile | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
-| GET /internal/users/{id} | ⬜ | ⬜ | - | - | ⬜ | ⬜ |
-| GET /internal/users?ids= | ⬜ | ⬜ | ⬜ | - | - | ⬜ |
-
+| GET /internal/users/{id} | ✅ | ✅ | - | - | ✅ | ⬜ |
+| GET /internal/users?ids= | ✅ | ✅ | ✅ | - | - | ⬜ |
 ## mentor-service (8082)
 | Endpoint | Built | Success | 400 | 401/403 | 404/409 | Cross |
 |---|---|---|---|---|---|---|
