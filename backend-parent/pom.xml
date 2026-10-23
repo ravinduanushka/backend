@@ -34,5 +34,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- modules are added one by one as each service is created -->
+    <modules>
+        <module>discovery-service</module>
+    </modules>
 </project>
