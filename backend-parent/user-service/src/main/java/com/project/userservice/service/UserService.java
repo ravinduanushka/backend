@@ -2,7 +2,9 @@ package com.project.userservice.service;
 
 import com.project.userservice.config.CurrentUser;
 import com.project.userservice.dto.RegisterRequest;
+import com.project.userservice.dto.UpdateUserRequest;
 import com.project.userservice.dto.UserResponse;
+import com.project.userservice.entity.AccountStatus;
 import com.project.userservice.entity.Role;
 import com.project.userservice.entity.StudentProfile;
 import com.project.userservice.entity.User;
@@ -45,5 +47,30 @@ public class UserService {
             studentProfileRepository.save(profile);
         }
         return UserResponse.from(saved);
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponse getMe(CurrentUser current) {
+        return UserResponse.from(getActiveUser(current.id()));
+    }
+
+    @Transactional
+    public UserResponse updateMe(CurrentUser current, UpdateUserRequest request) {
+        User user = getActiveUser(current.id());
+        user.setFirstName(request.firstName());
+        user.setLastName(request.lastName());
+        user.setPhone(request.phone());
+        user.setProfileImageKey(request.profileImageKey());
+        // flush so updatedAt is set before building the response
+        return UserResponse.from(userRepository.saveAndFlush(user));
+    }
+
+    private User getActiveUser(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> ApiException.notFound("User not registered"));
+        if (user.getAccountStatus() != AccountStatus.ACTIVE) {
+            throw ApiException.forbidden("Account is not active");
+        }
+        return user;
     }
 }
