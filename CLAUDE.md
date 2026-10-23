@@ -65,7 +65,5 @@
 - **Do not add features, endpoints, or libraries that the task did not ask for**
 
 ## API check rules
-- **For every endpoint you build, add requests to `docs/api/http/<service>.http`: one success case, plus 400, 403, 404 or 409 cases where the API doc lists them**
-- **Use `{{user}}`, `{{mentor}}`, `{{booking}}` host variables from `docs/api/http/http-client.env.json`**
-- **After building an endpoint, set `Built` to ✅ in `docs/api/API-CHECKS.md`. Never mark the test columns. The developer marks them after running the requests**
-- **When an endpoint changes, update its requests in the `.http` file in the same task**
+- After building an endpoint, tell me the Postman request to add (method, URL, headers, body, expected status for success, 400, 403, 404/409)
+- After building an endpoint, set `Built` to ✅ in `docs/api/API-CHECKS.md`. Never mark the test columns. The developer marks them after running the requests
