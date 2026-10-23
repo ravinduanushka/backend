@@ -10,8 +10,8 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 | GET /api/users/me | ✅ | ✅ | - | ⬜ | ✅ | ⬜ |
 | PUT /api/users/me | ✅ | ✅ | ✅ | ⬜ | ✅ | ⬜ |
 | POST /api/users/me/avatar-upload-url | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
-| GET /api/students/me/profile | ⬜ | ⬜ | - | ⬜ | - | ⬜ |
-| PUT /api/students/me/profile | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
+| GET /api/students/me/profile | ✅ | ✅ | - | ✅ | ✅ | ⬜ |
+| PUT /api/students/me/profile | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
 | GET /internal/users/{id} | ⬜ | ⬜ | - | - | ⬜ | ⬜ |
 | GET /internal/users?ids= | ⬜ | ⬜ | ⬜ | - | - | ⬜ |
 
