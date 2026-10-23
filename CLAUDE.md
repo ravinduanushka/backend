@@ -48,3 +48,24 @@
 - Never touch another developer's service without being asked
 - Never commit secrets. Use `.env` and `.env.example`
 - Maven (IntelliJ bundled), use if `mvn` is not found: `"D:\Program Files\JetBrains\IntelliJ IDEA\plugins\maven-plugin\lib\maven3\bin\mvn.cmd"`. Run it from the module folder, for example `backend-parent\user-service`
+
+## Rules for Claude Code
+- Do NOT run `git commit`, `git push`, `git merge`, or create branches. The developer does all Git work in IntelliJ
+- Do one task at a time. Stop after each task and say what to test
+- Follow `docs/api` (endpoints, JSON) and `docs/database` (tables) exactly. If they conflict with the task, ask first. Never edit `docs/api` or `docs/database` without being asked
+- Stack: Java 17, Spring Boot 4.0.8, Spring Cloud 2025.1.3, SQLite, Flyway. Use Boot 4 starter names (`spring-boot-starter-webmvc`, `spring-boot-starter-flyway`)
+- Folders per service: `config`, `controller`, `dto`, `entity` (not `model`), `exception`, `repository`, `service`, `client`, `scheduler` as needed. `resources` is under `src/main`, next to `java`
+- Comments: short, single line, only where needed
+- After editing, build with Maven and fix errors before reporting done
+- Never touch another developer's service without being asked
+- Never commit secrets. Use `.env` and `.env.example`
+- Maven (IntelliJ bundled), use if `mvn` is not found: "D:\Program Files\JetBrains\IntelliJ IDEA\plugins\maven-plugin\lib\maven3\bin\mvn.cmd". Run it from the module folder, for example `backend-parent\user-service`
+- **Errors use the one shape in `docs/api/00-conventions.md` (timestamp, status, error, message, path, fieldErrors)**
+- **Until Phase 5 (Asgardeo), auth is a dev filter reading headers `X-Dev-User-Id`, `X-Dev-Email`, `X-Dev-Role`. Missing `X-Dev-User-Id` gives 401. Keep it in `config` so JWT can replace it**
+- **Do not add features, endpoints, or libraries that the task did not ask for**
+
+## API check rules
+- **For every endpoint you build, add requests to `docs/api/http/<service>.http`: one success case, plus 400, 403, 404 or 409 cases where the API doc lists them**
+- **Use `{{user}}`, `{{mentor}}`, `{{booking}}` host variables from `docs/api/http/http-client.env.json`**
+- **After building an endpoint, set `Built` to ✅ in `docs/api/API-CHECKS.md`. Never mark the test columns. The developer marks them after running the requests**
+- **When an endpoint changes, update its requests in the `.http` file in the same task**
