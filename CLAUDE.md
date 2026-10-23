@@ -34,3 +34,17 @@
 - Ids that point to another service have no foreign key
 - Roles: STUDENT, MENTOR, ADMIN
 - SQLite has no row locks. Double booking is blocked by unique index `uq_bookings_active_slot` and `availability_slots.version` (@Version)
+
+
+## Rules for Claude Code
+
+- Do NOT run `git commit`, `git push`, `git merge`, or create branches. The developer does all Git work in IntelliJ
+- Do one task at a time. Stop after each task and say what to test
+- Follow `docs/api` (endpoints, JSON) and `docs/database` (tables) exactly. If they conflict with the task, ask first
+- Stack: Java 17, Spring Boot 4.0.8, Spring Cloud 2025.1.3, SQLite, Flyway. Use Boot 4 starter names (`spring-boot-starter-webmvc`, `spring-boot-starter-flyway`)
+- Folders per service: `config`, `controller`, `dto`, `entity` (not `model`), `exception`, `repository`, `service`, `client`, `scheduler` as needed. `resources` is under `src/main`, next to `java`
+- Comments: short, single line, only where needed
+- After editing, build with Maven and fix errors before reporting done
+- Never touch another developer's service without being asked
+- Never commit secrets. Use `.env` and `.env.example`
+- Maven (IntelliJ bundled), use if `mvn` is not found: `"D:\Program Files\JetBrains\IntelliJ IDEA\plugins\maven-plugin\lib\maven3\bin\mvn.cmd"`. Run it from the module folder, for example `backend-parent\user-service`
