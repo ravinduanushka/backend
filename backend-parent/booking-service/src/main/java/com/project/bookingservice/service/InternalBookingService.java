@@ -10,28 +10,23 @@ import com.project.bookingservice.exception.ApiException;
 import com.project.bookingservice.repository.BookingRepository;
 import com.project.bookingservice.repository.MentoringSessionRepository;
 import com.project.bookingservice.util.TimeUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Service
 public class InternalBookingService {
 
-    private static final Logger log = LoggerFactory.getLogger(InternalBookingService.class);
-
     private final BookingRepository bookingRepository;
     private final MentoringSessionRepository sessionRepository;
-    private final MentorClient mentorClient;
+    private final BookingLifecycle lifecycle;
     private final TransactionTemplate transactionTemplate;
 
     public InternalBookingService(BookingRepository bookingRepository,
                                   MentoringSessionRepository sessionRepository,
-                                  MentorClient mentorClient, TransactionTemplate transactionTemplate) {
+                                  BookingLifecycle lifecycle, TransactionTemplate transactionTemplate) {
         this.bookingRepository = bookingRepository;
         this.sessionRepository = sessionRepository;
-        this.mentorClient = mentorClient;
+        this.lifecycle = lifecycle;
         this.transactionTemplate = transactionTemplate;
     }
 
@@ -52,7 +47,7 @@ public class InternalBookingService {
         if (booking.getExpiresAt() != null && booking.getExpiresAt().compareTo(TimeUtil.now()) < 0) {
             throw ApiException.conflict("Booking has expired");
         }
-        moveSlot(booking.getSlotId(), MentorClient.BOOKED);
+        lifecycle.moveSlot(booking.getSlotId(), MentorClient.BOOKED);
         BookingStatus status = transactionTemplate.execute(tx -> {
             Booking current = find(id);
             if (current.getStatus() == BookingStatus.PENDING) {
@@ -77,30 +72,8 @@ public class InternalBookingService {
         if (booking.getStatus() != BookingStatus.PENDING) {
             return new BookingStatusResponse(booking.getId(), booking.getStatus());
         }
-        moveSlot(booking.getSlotId(), MentorClient.AVAILABLE);
-        BookingStatus status = transactionTemplate.execute(tx -> {
-            Booking current = find(id);
-            if (current.getStatus() == BookingStatus.PENDING) {
-                current.setStatus(BookingStatus.CANCELLED);
-                current.setCancellationReason("Payment failed");
-                current.setExpiresAt(null);
-                bookingRepository.saveAndFlush(current);
-            }
-            return current.getStatus();
-        });
-        return new BookingStatusResponse(id, status);
-    }
-
-    // a 409 on a PENDING booking means a previous attempt already moved the slot
-    private void moveSlot(String slotId, String target) {
-        try {
-            mentorClient.changeSlotStatus(slotId, target);
-        } catch (ApiException e) {
-            if (e.getStatus() != HttpStatus.CONFLICT) {
-                throw e;
-            }
-            log.info("Slot {} is already {} or not changeable, continuing", slotId, target);
-        }
+        Booking cancelled = lifecycle.cancel(booking, "Payment failed");
+        return new BookingStatusResponse(id, cancelled.getStatus());
     }
 
     private Booking find(String id) {
