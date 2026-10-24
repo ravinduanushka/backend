@@ -3,9 +3,11 @@ package com.project.bookingservice.controller;
 import com.project.bookingservice.config.CurrentUser;
 import com.project.bookingservice.dto.BookingRequest;
 import com.project.bookingservice.dto.BookingResponse;
+import com.project.bookingservice.dto.CancelRequest;
 import com.project.bookingservice.dto.PageResponse;
 import com.project.bookingservice.entity.BookingStatus;
 import com.project.bookingservice.service.BookingService;
+import com.project.bookingservice.service.CancellationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookingController {
 
     private final BookingService bookingService;
+    private final CancellationService cancellationService;
 
-    public BookingController(BookingService bookingService) {
+    public BookingController(BookingService bookingService, CancellationService cancellationService) {
         this.bookingService = bookingService;
+        this.cancellationService = cancellationService;
     }
 
     @PostMapping
@@ -44,5 +48,11 @@ public class BookingController {
     @GetMapping("/{id}")
     public BookingResponse getById(CurrentUser current, @PathVariable String id) {
         return bookingService.getById(current, id);
+    }
+
+    @PostMapping("/{id}/cancel")
+    public BookingResponse cancel(CurrentUser current, @PathVariable String id,
+                                  @Valid @RequestBody(required = false) CancelRequest request) {
+        return cancellationService.cancel(current, id, request == null ? null : request.reason());
     }
 }
