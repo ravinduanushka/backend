@@ -25,11 +25,11 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 | POST /api/expertise-categories | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
 | POST /api/expertise-categories/{id}/expertises | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
 | PUT /api/mentors/me/expertises | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
-| POST /api/mentors/me/slots | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
-| GET /api/mentors/me/slots | ⬜ | ⬜ | - | ⬜ | - | ⬜ |
-| PUT /api/mentors/me/slots/{slotId} | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
-| DELETE /api/mentors/me/slots/{slotId} | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
-| GET /api/mentors/{id}/slots | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
+| POST /api/mentors/me/slots | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| GET /api/mentors/me/slots | ✅ | ✅ | - | ✅ | ✅ | ⬜ |
+| PUT /api/mentors/me/slots/{slotId} | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| DELETE /api/mentors/me/slots/{slotId} | ✅ | ✅ | - | ✅ | ✅ | ⬜ |
+| GET /api/mentors/{id}/slots | ✅ | ⬜ | ✅ | ✅ | ✅ | ⬜ |
 | POST /api/mentors/me/verification-upload-url | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
 | POST /api/mentors/me/verifications | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
 | GET /api/mentors/me/verifications | ⬜ | ⬜ | - | ⬜ | - | ⬜ |
