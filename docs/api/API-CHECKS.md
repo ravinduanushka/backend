@@ -31,10 +31,10 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 | DELETE /api/mentors/me/slots/{slotId} | ✅ | ✅ | - | ✅ | ✅ | ⬜ |
 | GET /api/mentors/{id}/slots | ✅ | ⬜ | ✅ | ✅ | ✅ | ⬜ |
 | POST /api/mentors/me/verification-upload-url | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
-| POST /api/mentors/me/verifications | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
-| GET /api/mentors/me/verifications | ⬜ | ⬜ | - | ⬜ | - | ⬜ |
-| GET /api/verifications | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
-| PUT /api/verifications/{id} | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| POST /api/mentors/me/verifications | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| GET /api/mentors/me/verifications | ✅ | ✅ | - | ✅ | - | ⬜ |
+| GET /api/verifications | ✅ | ✅ | ✅ | ✅ | - | ⬜ |
+| PUT /api/verifications/{id} | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
 | GET /internal/mentors/{id} | ⬜ | ⬜ | - | - | ⬜ | ⬜ |
 | GET /internal/mentors/by-user/{userId} | ⬜ | ⬜ | - | - | ⬜ | ⬜ |
 | PUT /internal/slots/{slotId}/status | ⬜ | ⬜ | ⬜ | - | ⬜ | ⬜ |
