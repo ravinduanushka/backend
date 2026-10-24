@@ -42,9 +42,9 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 ## booking-service (8083)
 | Endpoint | Built | Success | 400 | 401/403 | 404/409 | Cross |
 |---|---|---|---|---|---|---|
-| POST /api/bookings | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
-| GET /api/bookings | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
-| GET /api/bookings/{id} | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
+| POST /api/bookings | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| GET /api/bookings | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| GET /api/bookings/{id} | ✅ | ✅ | - | ✅ | ✅ | ⬜ |
 | POST /api/bookings/{id}/cancel | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | GET /api/bookings/{id}/session | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
 | POST /api/bookings/{id}/session/start | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
