@@ -17,8 +17,8 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 ## mentor-service (8082)
 | Endpoint | Built | Success | 400 | 401/403 | 404/409 | Cross |
 |---|---|---|---|---|---|---|
-| GET /api/mentors/me | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
-| PUT /api/mentors/me | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
+| GET /api/mentors/me | ✅ | ✅ | - | ✅ | ✅ | ⬜ |
+| PUT /api/mentors/me | ✅ | ✅ | ✅ | ✅ | - | ⬜ |
 | GET /api/mentors | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
 | GET /api/mentors/{id} | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
 | GET /api/expertise-categories | ⬜ | ⬜ | - | ⬜ | - | ⬜ |
