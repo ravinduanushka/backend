@@ -3,6 +3,8 @@ package com.project.mentorservice.service;
 import com.project.mentorservice.client.UserClient;
 import com.project.mentorservice.config.CurrentUser;
 import com.project.mentorservice.dto.MentorExpertiseResponse;
+import com.project.mentorservice.dto.MentorExpertisesRequest;
+import com.project.mentorservice.dto.MentorExpertisesResponse;
 import com.project.mentorservice.dto.MentorRequest;
 import com.project.mentorservice.dto.MentorResponse;
 import com.project.mentorservice.dto.UserSummary;
@@ -16,10 +18,12 @@ import com.project.mentorservice.repository.ExpertiseCategoryRepository;
 import com.project.mentorservice.repository.ExpertiseRepository;
 import com.project.mentorservice.repository.MentorExpertiseRepository;
 import com.project.mentorservice.repository.MentorRepository;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -77,6 +81,31 @@ public class MentorService {
         // flush so updatedAt is set before building the response
         Mentor saved = mentorRepository.saveAndFlush(mentor);
         return new SaveResult(toResponse(saved), created);
+    }
+
+    @Transactional
+    public MentorExpertisesResponse saveExpertises(CurrentUser current, MentorExpertisesRequest request) {
+        requireMentor(current);
+        Mentor mentor = mentorRepository.findByUserId(current.id())
+                .orElseThrow(() -> ApiException.notFound("Mentor profile not created yet"));
+        Set<String> ids = new HashSet<>();
+        for (MentorExpertisesRequest.Item item : request.expertises()) {
+            if (!ids.add(item.expertiseId())) {
+                throw ApiException.badRequest("Duplicate expertiseId: " + item.expertiseId());
+            }
+        }
+        if (expertiseRepository.findAllById(ids).size() != ids.size()) {
+            throw ApiException.badRequest("Unknown expertiseId in the list");
+        }
+        mentorExpertiseRepository.deleteByIdMentorId(mentor.getId());
+        // flush the delete first, so re-adding the same expertise does not hit the primary key
+        mentorExpertiseRepository.flush();
+        for (MentorExpertisesRequest.Item item : request.expertises()) {
+            mentorExpertiseRepository.save(
+                    new MentorExpertise(mentor.getId(), item.expertiseId(), item.proficiency()));
+        }
+        mentorExpertiseRepository.flush();
+        return new MentorExpertisesResponse(toExpertiseResponses(mentor.getId()));
     }
 
     private void requireMentor(CurrentUser current) {

@@ -21,10 +21,10 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 | PUT /api/mentors/me | ✅ | ✅ | ✅ | ✅ | - | ⬜ |
 | GET /api/mentors | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
 | GET /api/mentors/{id} | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
-| GET /api/expertise-categories | ⬜ | ⬜ | - | ⬜ | - | ⬜ |
-| POST /api/expertise-categories | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
-| POST /api/expertise-categories/{id}/expertises | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
-| PUT /api/mentors/me/expertises | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| GET /api/expertise-categories | ✅ | ✅ | - | ✅ | - | ⬜ |
+| POST /api/expertise-categories | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| POST /api/expertise-categories/{id}/expertises | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
+| PUT /api/mentors/me/expertises | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
 | POST /api/mentors/me/slots | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | GET /api/mentors/me/slots | ⬜ | ⬜ | - | ⬜ | - | ⬜ |
 | PUT /api/mentors/me/slots/{slotId} | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |

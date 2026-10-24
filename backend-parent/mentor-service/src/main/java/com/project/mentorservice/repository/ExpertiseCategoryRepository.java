@@ -6,4 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ExpertiseCategoryRepository extends JpaRepository<ExpertiseCategory, String> {
 
     boolean existsByName(String name);
+
+    boolean existsByNameIgnoreCase(String name);
+
+    java.util.List<ExpertiseCategory> findAllByOrderByNameAsc();
+
+
 }
