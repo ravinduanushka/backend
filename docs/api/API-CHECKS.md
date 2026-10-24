@@ -46,9 +46,9 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 | GET /api/bookings | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
 | GET /api/bookings/{id} | ✅ | ✅ | - | ✅ | ✅ | ⬜ |
 | POST /api/bookings/{id}/cancel | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
-| GET /api/bookings/{id}/session | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
-| POST /api/bookings/{id}/session/start | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
-| POST /api/bookings/{id}/session/complete | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
+| GET /api/bookings/{id}/session | ✅ | ✅ | - | ✅ | ✅ | ⬜ |
+| POST /api/bookings/{id}/session/start | ✅ | ✅ | - | ✅ | ✅ | ⬜ |
+| POST /api/bookings/{id}/session/complete | ✅ | ✅ | - | ✅ | ✅ | ⬜ |
 | POST /api/bookings/{id}/review | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | GET /api/reviews | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
 | GET /internal/bookings/{id} | ✅ | ✅ | - | - | - | ⬜ |
