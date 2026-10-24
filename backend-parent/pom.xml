@@ -39,5 +39,6 @@
         <module>user-service</module>
         <module>mentor-service</module>
         <module>booking-service</module>
+        <module>notification-service</module>
     </modules>
 </project>
