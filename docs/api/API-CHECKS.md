@@ -51,9 +51,9 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 | POST /api/bookings/{id}/session/complete | ⬜ | ⬜ | - | ⬜ | ⬜ | ⬜ |
 | POST /api/bookings/{id}/review | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | GET /api/reviews | ⬜ | ⬜ | ⬜ | ⬜ | - | ⬜ |
-| GET /internal/bookings/{id} | ⬜ | ⬜ | - | - | ⬜ | ⬜ |
-| PUT /internal/bookings/{id}/confirm | ⬜ | ⬜ | - | - | ⬜ | ⬜ |
-| PUT /internal/bookings/{id}/payment-failed | ⬜ | ⬜ | - | - | ⬜ | ⬜ |
+| GET /internal/bookings/{id} | ✅ | ✅ | - | - | - | ⬜ |
+| PUT /internal/bookings/{id}/confirm | ✅ | ✅ | ✅ | - | - | ⬜ |
+| PUT /internal/bookings/{id}/payment-failed | ✅ | ✅ | ✅ | - | - | ⬜ |
 
 ## payment-service (8084)
 | Endpoint | Built | Success | 400 | 401/403 | 404/409 | Cross |
