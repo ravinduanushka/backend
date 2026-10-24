@@ -67,4 +67,5 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 | POST /internal/notifications | ⬜ | ⬜ | ⬜ | - | - | ⬜ |
 | POST /internal/audit-logs | ⬜ | ⬜ | ⬜ | - | - | ⬜ |
 
+BookingExpiryScheduler: ✅ tested (expired PENDING cancelled, slot freed, CONFIRMED untouched)
 Secondary endpoints (refunds, history, reschedule, mentorship, chat, notifications list, recommendations, reports, admin) are added in Phase 4 from `docs/api/06` and `docs/api/07`.
