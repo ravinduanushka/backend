@@ -40,5 +40,6 @@
         <module>mentor-service</module>
         <module>booking-service</module>
         <module>notification-service</module>
+        <module>analytic-service</module>
     </modules>
 </project>
