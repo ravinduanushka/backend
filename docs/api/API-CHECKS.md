@@ -35,11 +35,10 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 | GET /api/mentors/me/verifications | ✅ | ✅ | - | ✅ | - | ⬜ |
 | GET /api/verifications | ✅ | ✅ | ✅ | ✅ | - | ⬜ |
 | PUT /api/verifications/{id} | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ |
-| GET /internal/mentors/{id} | ⬜ | ⬜ | - | - | ⬜ | ⬜ |
-| GET /internal/mentors/by-user/{userId} | ⬜ | ⬜ | - | - | ⬜ | ⬜ |
-| PUT /internal/slots/{slotId}/status | ⬜ | ⬜ | ⬜ | - | ⬜ | ⬜ |
-| POST /internal/mentors/{id}/rating | ⬜ | ⬜ | ⬜ | - | ⬜ | ⬜ |
-
+| GET /internal/mentors/{id} | ✅ | ✅ | - | - | - | ⬜ |
+| GET /internal/mentors/by-user/{userId} | ✅ | ✅ | - | - | - | ⬜ |
+| PUT /internal/slots/{slotId}/status | ✅ | ✅ | ✅ | - | - | ⬜ |
+| POST /internal/mentors/{id}/rating | ✅ | ✅ | ✅ | - | - | ⬜ |
 ## booking-service (8083)
 | Endpoint | Built | Success | 400 | 401/403 | 404/409 | Cross |
 |---|---|---|---|---|---|---|
