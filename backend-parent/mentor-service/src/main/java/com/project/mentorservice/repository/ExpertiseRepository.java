@@ -9,4 +9,5 @@ public interface ExpertiseRepository extends JpaRepository<Expertise, String> {
     List<Expertise> findByCategoryId(String categoryId);
 
     boolean existsByCategoryIdAndName(String categoryId, String name);
+    boolean existsByCategoryIdAndNameIgnoreCase(String categoryId, String name);
 }

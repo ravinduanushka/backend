@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.project.mentorservice.dto.MentorExpertisesRequest;
+import com.project.mentorservice.dto.MentorExpertisesResponse;
 
 @RestController
 @RequestMapping("/api/mentors")
@@ -34,4 +36,18 @@ public class MentorController {
         HttpStatus status = result.created() ? HttpStatus.CREATED : HttpStatus.OK;
         return ResponseEntity.status(status).body(result.mentor());
     }
+
+    @PutMapping("/me/expertises")
+    public MentorExpertisesResponse saveExpertises(CurrentUser current,
+                                                   @Valid @RequestBody MentorExpertisesRequest request) {
+        return mentorService.saveExpertises(current, request);
+    }
+
+
+
+
+
+
+
+
 }
