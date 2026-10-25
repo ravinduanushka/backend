@@ -64,7 +64,7 @@ Built = code written (Claude Code). Success, 400, 401/403, 404/409 = requests ru
 ## notification-service (8086) and analytic-service (8087)
 | Endpoint | Built | Success | 400 | 401/403 | 404/409 | Cross |
 |---|---|---|---|---|---|---|
-| POST /internal/notifications | ⬜ | ⬜ | ⬜ | - | - | ⬜ |
+| POST /internal/notifications | ✅ | ✅ | ✅ | - | - | ⬜ |
 | POST /internal/audit-logs | ⬜ | ⬜ | ⬜ | - | - | ⬜ |
 
 BookingExpiryScheduler: ✅ tested (expired PENDING cancelled, slot freed, CONFIRMED untouched)

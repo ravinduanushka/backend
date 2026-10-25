@@ -1,0 +1,219 @@
+{
+  "info": {
+    "_postman_id": "b7ea575d-59cd-4aa9-9d1f-d0beb55eb8f4",
+    "name": "notification-service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55546075",
+    "_collection_link": "https://go.postman.co/collection/55546075-b7ea575d-59cd-4aa9-9d1f-d0beb55eb8f4?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "POST 1 create notification (201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"userId\": \"5f1c0b7e-2d1a-4c55-9a77-1c2f6f3a9b10\",\r\n  \"type\": \"BOOKING_CONFIRMED\",\r\n  \"title\": \"Booking confirmed\",\r\n  \"message\": \"Your session is on 5 Nov at 09:00\",\r\n  \"channel\": \"IN_APP\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8086/internal/notifications",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8086",
+          "path": [
+            "internal",
+            "notifications"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST 2 create scheduled notification (201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"userId\": \"5f1c0b7e-2d1a-4c55-9a77-1c2f6f3a9b10\",\r\n  \"type\": \"BOOKING_CONFIRMED\",\r\n  \"title\": \"Booking confirmed\",\r\n  \"message\": \"Your session is on 5 Nov at 09:00\",\r\n  \"channel\": \"EMAIL\",\r\n  \"scheduledAt\": \"2026-11-01T10:00:00Z\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8086/internal/notifications",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8086",
+          "path": [
+            "internal",
+            "notifications"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST 3 empty body (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8086/internal/notifications",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8086",
+          "path": [
+            "internal",
+            "notifications"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8086/internal/notifications \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -d '{}'"
+      },
+      "response": []
+    },
+    {
+      "name": "POST 4 invalid channel SMS (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"userId\":\"5f1c0b7e-2d1a-4c55-9a77-1c2f6f3a9b10\",\"type\":\"BOOKING_CONFIRMED\",\"title\":\"Booking confirmed\",\"message\":\"Your session is on 5 Nov at 09:00\",\"channel\":\"SMS\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8086/internal/notifications",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8086",
+          "path": [
+            "internal",
+            "notifications"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8086/internal/notifications \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -d '{\"userId\":\"5f1c0b7e-2d1a-4c55-9a77-1c2f6f3a9b10\",\"type\":\"BOOKING_CONFIRMED\",\"title\":\"Booking confirmed\",\"message\":\"Your session is on 5 Nov at 09:00\",\"channel\":\"SMS\"}'"
+      },
+      "response": []
+    },
+    {
+      "name": "POST 5 invalid UUID (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"userId\":\"abc\",\"type\":\"BOOKING_CONFIRMED\",\"title\":\"Booking confirmed\",\"message\":\"Your session is on 5 Nov at 09:00\",\"channel\":\"IN_APP\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8086/internal/notifications",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8086",
+          "path": [
+            "internal",
+            "notifications"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8086/internal/notifications \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -d '{\"userId\":\"abc\",\"type\":\"BOOKING_CONFIRMED\",\"title\":\"Booking confirmed\",\"message\":\"Your session is on 5 Nov at 09:00\",\"channel\":\"IN_APP\"}'"
+      },
+      "response": []
+    },
+    {
+      "name": "POST 6 invalid scheduledAt (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"userId\":\"5f1c0b7e-2d1a-4c55-9a77-1c2f6f3a9b10\",\"type\":\"BOOKING_CONFIRMED\",\"title\":\"Booking confirmed\",\"message\":\"Your session is on 5 Nov at 09:00\",\"channel\":\"EMAIL\",\"scheduledAt\":\"tomorrow\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8086/internal/notifications",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8086",
+          "path": [
+            "internal",
+            "notifications"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8086/internal/notifications \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -d '{\"userId\":\"5f1c0b7e-2d1a-4c55-9a77-1c2f6f3a9b10\",\"type\":\"BOOKING_CONFIRMED\",\"title\":\"Booking confirmed\",\"message\":\"Your session is on 5 Nov at 09:00\",\"channel\":\"EMAIL\",\"scheduledAt\":\"tomorrow\"}'"
+      },
+      "response": []
+    }
+  ]
+}
