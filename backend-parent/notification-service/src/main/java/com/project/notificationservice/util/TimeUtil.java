@@ -15,4 +15,8 @@ public final class TimeUtil {
     public static String now() {
         return FORMAT.format(Instant.now());
     }
+
+    public static String format(Instant instant) {
+        return FORMAT.format(instant);
+    }
 }
